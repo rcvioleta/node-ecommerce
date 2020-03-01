@@ -25,7 +25,9 @@ exports.store = async (req, res, next) => {
 	try {
 		const user = new User(req.body);
 		await user.save();
-		res.status(200).send('User created successfully!');
+		const token = await user.generateAuthToken();
+
+		res.status(201).send({ user, token });
 	} catch (e) {
 		res.status(500).send(e);
 	}
@@ -33,7 +35,6 @@ exports.store = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
 	const updates = Object.keys(req.body);
-
 	try {
 		const user = await User.findById(req.params.id);
 		updates.forEach((key) => (user[key] = req.body[key]));
@@ -60,5 +61,17 @@ exports.profile = async (req, res, next) => {
 		res.status(200).send(req.user);
 	} catch (e) {
 		res.status(500).send(e);
+	}
+};
+
+exports.login = async (req, res, next) => {
+	try {
+		const { email, password } = req.body;
+		const user = await User.authenticate(email, password);
+		const token = await user.generateAuthToken();
+
+		res.status(200).send({ user, token });
+	} catch (e) {
+		res.status(401).send(e);
 	}
 };

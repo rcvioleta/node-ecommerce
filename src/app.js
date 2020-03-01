@@ -18,3 +18,15 @@ app.use(userRoutes);
 app.listen(port, () => {
 	console.log(`Server running on port: ${port}`);
 });
+
+// const jwt = require('jsonwebtoken');
+
+// const myFunc = async () => {
+// 	const token = jwt.sign({ _id: 'jwtid123' }, 'ecommerceSys');
+// 	console.log('token: ', token);
+
+// 	const decoded = jwt.verify(token, 'ecommerceSys');
+// 	console.log('decoded: ', decoded._id);
+// };
+
+// myFunc();
